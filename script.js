@@ -109,6 +109,12 @@ infoBox.onAdd = function (map) {
             <p>Wenn Du Nutzer des Insterforums bist, trage dich ein, um deinen Standort mit der Community zu teilen!</p>
             <p><a href="https://www.insterforum.de/thread/1316-erstellung-einer-forumsuserkarte-diskussion-teilnahme-freiwillig/?postID=37921#post37921" target="_blank">Nutzungshinweise</a></p>
             <a href="https://the-minster.github.io/" class="btn-link" target="_blank" style="display:inline-block; margin-top:10px; padding:8px; background:#0056b3; color:white; text-decoration:none; border-radius:4px;"><s>Jetzt</s>Später eintragen</a>
+
+            <hr style="margin: 15px 0 10px 0; border: 0; border-top: 1px solid #eee;">
+            <div class="info-footer" style="font-size: 11px; color: #666; line-height: 1.4;">
+                <p>Lizenz: <a href="https://the-minster.github.io/insterforum-nutzerkarte/LICENSE" target="_blank">MIT Open Source</a><br>
+                Details: <a href="https://the-minster.github.io/insterforum-nutzerkarte/README.md" target="_blank">README.md</a></p>
+            </div>
         </div>
         <div id="info-minimized-title">ℹ Info & Anmeldung</div>
     `;
