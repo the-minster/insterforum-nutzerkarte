@@ -1,0 +1,139 @@
+/* Verhindert Scrollbalken und nutzt den kompletten Bildschirm */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+}
+
+/* Die Karte MUSS eine Höhe haben */
+#map {
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* Styling für die Layer-Steuerung oben rechts */
+.leaflet-control-layers {
+    border-radius: 8px !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(5px);
+    font-size: 14px;
+}
+
+/* --- DESIGN DER KLAPPBAREN INFO-BOX (unten links) --- */
+.map-info-box {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 -2px 15px rgba(0,0,0,0.2);
+    max-width: 300px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    pointer-events: auto; /* Klicks abfangen */
+}
+
+/* Zustand wenn geschlossen */
+.map-info-box.closed {
+    padding: 10px 15px;
+    background: #0056b3;
+    color: white;
+    max-width: 200px;
+}
+
+.map-info-box.closed #info-content, 
+.map-info-box.closed #info-toggle {
+    display: none;
+}
+
+#info-minimized-title {
+    display: none;
+    font-weight: bold;
+    text-align: center;
+}
+
+.map-info-box.closed #info-minimized-title {
+    display: block;
+}
+
+/* Zustand wenn offen */
+#info-toggle {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    color: #999;
+    font-weight: bold;
+    font-family: sans-serif;
+}
+
+#info-content h4 {
+    margin: 0 0 8px 0;
+    color: #0056b3;
+}
+
+.btn-link {
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #0056b3;
+    color: white !important;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.btn-link:hover {
+    background-color: #004494;
+}
+
+/* Styling für die Popups */
+.leaflet-popup-content-wrapper {
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.leaflet-popup-content b {
+    color: #0056b3;
+    font-size: 1.1em;
+}
+
+/* --- MOBILE OPTIMIERUNG --- */
+@media (max-width: 600px) {
+    
+    .map-info-box {
+        /* Erhöhter Abstand, damit die Box über der Browser-Leiste schwebt */
+        bottom: 50px !important; 
+        left: 10px !important;
+        margin-bottom: 0 !important;
+        
+        max-width: 80vw; /* Etwas schmaler, damit es nicht klemmt */
+        font-size: 16px;
+        z-index: 2000; /* Sicherstellen, dass es ganz oben liegt */
+    }
+
+    /* Falls die Box im geschlossenen Zustand immer noch zu groß ist */
+    .map-info-box.closed {
+        max-width: 150px;
+        padding: 8px 12px;
+    }
+
+    .btn-link {
+        padding: 12px;
+        font-size: 16px;
+    }
+
+    /* Layer-Steuerung (rechts oben) verkleinern, falls sie kollidieren */
+    .leaflet-control-layers {
+        margin-top: 5px !important;
+        transform: scale(0.9); /* Leicht verkleinern auf dem Handy */
+        transform-origin: top right;
+    }
+}
