@@ -34,7 +34,7 @@ Dieses Projekt ist unter der **MIT-Lizenz** veröffentlicht. Das bedeutet:
 - Der ursprüngliche Urhebervermerk und der Lizenztext müssen enthalten bleiben.
 - Es wird keine Haftung übernommen.
 
-Weitere Details findest du in der Datei [LICENSE](LICENSE).
+Weitere Details findest du in der Datei [LICENSE](LICENSE.txt).
 
 ---
 *Erstellt für die Community von [insterforum.de](https://www.insterforum.de)*
