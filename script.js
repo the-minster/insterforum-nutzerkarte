@@ -68,6 +68,7 @@ Papa.parse(csvUrl, {
                     heatPoints.push([lat, lon, 5]);
                     overlapPoints.push([lat, lon, radiusKm / 100]); 
                 }
+            }
         });
 
         heatLayerPoints.setLatLngs(heatPoints);
