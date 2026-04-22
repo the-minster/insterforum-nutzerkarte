@@ -1,0 +1,3 @@
+// config.js
+const CSV = "aHR0cHM6Ly9kb2NzLmdvb2dsZS5jb20vc3ByZWFkc2hlZXRzL2QvZS8yUEFDWC0xdlRFT3JwOGE2NllwWkhmaVZ4NWRjTy1teWw1X2dxMTVobHpSSWZBSXg4WEFBMHhnUG1KWFlJeGNINXRmd0NDc3FEWEdaWEc2anlRNXhtVi9wdWI/Z2lkPTExMjQ2MjU4MTImc2luZ2xlPXRydWUmb3V0cHV0PWNzdgo="; // Dein Base64-String
+const csvUrl = atob(CSV);
