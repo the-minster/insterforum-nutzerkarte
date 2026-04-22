@@ -57,7 +57,7 @@ Papa.parse(csvUrl, {
 
                     const circle = L.circle([lat, lon], {
                         radius: radiusKm * 1000, // Umrechnung in Meter
-                        color: 'blue',
+                        color: 'lightblue',
                         fillColor: 'blue',
                         fillOpacity: 0.05,
                         weight: 1
