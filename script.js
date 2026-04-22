@@ -1,4 +1,4 @@
-const map = L.map('map').setView([51.1657, 10.4515], 6); // Zentriert auf Deutschland
+const map = L.map('map').setView([51.1657, 10.4515], 6);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
@@ -6,7 +6,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // Marker-Icon
 const carIcon = L.icon({
-    iconUrl: 'instericon.png', // Pfad zu deinem Auto-Bild
+    iconUrl: 'instericon.png',
     iconSize: [32, 32], 
     iconAnchor: [16, 32], 
     popupAnchor: [0, -32] 
@@ -31,7 +31,6 @@ const heatLayerOverlap = L.heatLayer([], {
 
 const oms = new OverlappingMarkerSpiderfier(map);
 
-// CSV laden
 Papa.parse(csvUrl, {
     download: true,
     header: true,
@@ -41,7 +40,6 @@ Papa.parse(csvUrl, {
         const overlapPoints = [];
 
         data.forEach(row => {
-            // PRÜFUNG: Nur verarbeiten, wenn in der Spalte "Freigabe" TRUE oder WAHR steht
             const isApproved = row.Freigabe;
             if (isApproved === "TRUE" || isApproved === "WAHR" || isApproved === true) {
 
@@ -57,7 +55,6 @@ Papa.parse(csvUrl, {
                     markerLayer.addLayer(marker);
                     oms.addMarker(marker);
 
-                    // 2. Umkreis-Layer
                     const circle = L.circle([lat, lon], {
                         radius: radiusKm * 1000, // Umrechnung in Meter
                         color: 'lightblue',
@@ -68,20 +65,16 @@ Papa.parse(csvUrl, {
                     circle.bindPopup(`Radius von ${name}: ${radiusKm} km`);
                     circleLayer.addLayer(circle);
 
-                    // 3. Daten für Heatmaps
                     heatPoints.push([lat, lon, 5]);
                     overlapPoints.push([lat, lon, radiusKm / 100]); 
                 }
-            } // Ende der Freigabe-Prüfung
         });
 
-        // WICHTIG: Die Heatmap-Layer erst HIER (innerhalb von complete) befüllen
         heatLayerPoints.setLatLngs(heatPoints);
         heatLayerOverlap.setLatLngs(overlapPoints);
     }
 });
 
-// Menü zur Auswahl der Kartenansichten
 const overlayMaps = {
     "Nutzer-Marker": markerLayer,
     "Umkreis-Radien": circleLayer,
@@ -112,7 +105,7 @@ infoBox.onAdd = function (map) {
 
             <hr style="margin: 15px 0 10px 0; border: 0; border-top: 1px solid #eee;">
             <div class="info-footer" style="font-size: 11px; color: #666; line-height: 1.4;">
-                <p>Lizenz: <a href="https://the-minster.github.io/insterforum-nutzerkarte/LICENSE" target="_blank">MIT Open Source</a><br>
+                <p>Lizenz: <a href="https://the-minster.github.io/insterforum-nutzerkarte/LICENSE.txt" target="_blank">MIT Open Source</a><br>
                 Details: <a href="https://the-minster.github.io/insterforum-nutzerkarte/README.md" target="_blank">README.md</a></p>
             </div>
         </div>
