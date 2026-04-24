@@ -101,7 +101,7 @@ infoBox.onAdd = function (map) {
             <h4>Foren-Karte zum Insterforum</h4>
             <p><a href="https://www.insterforum.de" target="_blank">www.insterforum.de</a></p>
             <p>Wenn Du Nutzer des Insterforums bist, trage dich ein, um deinen Standort mit der Community zu teilen!</p>
-            <p>Vergiß nicht, mir (@minster) eine PN (Nachricht) im Insterforum zu senden.</p>
+            <p><b>Vergiß nicht, mir (@minster) eine PN (Nachricht) im Insterforum zu senden.</b></p>
             <p><a href="https://www.insterforum.de/thread/1316-erstellung-einer-forumsuserkarte-diskussion-teilnahme-freiwillig/?postID=40040#post40040" target="_blank">Nutzungshinweise</a></p>
             <p><a href="https://the-minster.github.io/insterforum-nutzerkarte/datenschutzerklaerung.html" target="_blank">Datenschutzerklärung</a></p>
             <a href="https://forms.gle/vucJNFTZ7fBqtBTB9" class="btn-link" target="_blank" style="display:inline-block; margin-top:10px; padding:8px; background:#0056b3; color:white; text-decoration:none; border-radius:4px;">Jetzt eintragen</a>
