@@ -5,12 +5,16 @@ on:
     - cron: '*/30 * * * *' # Läuft alle 30 Minuten
   workflow_dispatch: # Erlaubt manuelles Starten
 
+# Hier setzen wir die Variable global für den gesamten Workflow
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4 # Aktualisiert auf v4 (unterstützt Node 24)
+        uses: actions/checkout@v4
 
       - name: Download CSV from Google Sheets
         run: |
@@ -21,5 +25,7 @@ jobs:
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
           git add data.csv
-          # Prüfen, ob es Änderungen gibt, um unnötige Commits zu vermeiden
+          # Nur committen, wenn sich die Daten wirklich geändert haben
           git diff --quiet && git diff --staged --quiet || (git commit -m "Daten automatisch aktualisiert" && git push)
+         
+          
