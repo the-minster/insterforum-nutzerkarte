@@ -22,28 +22,25 @@ jobs:
 
       - name: Download and Clean CSV
         run: |
-          # 1. Download der kompletten Datei
-          # Wir nutzen -f um bei Fehlern abzubrechen und -L für Weiterleitungen
           curl -f -L -o temp_full.csv "https://docs.google.com/spreadsheets/d/e/2PACX-1vTEOrp8a66YpZHfiVx5dcO-myl5_gq15hlzRIfAIx8XAA0xgPmJXYIxcH5tfwCCsqDXGZXG6jyQ5xmV/pub?gid=1124625812&single=true&output=csv"
-          
-          # 2. Intelligente Filterung mit Python
           python3 - <<EOF
           import csv
           with open('temp_full.csv', 'r', encoding='utf-8') as f:
-              # Wir lesen die Datei ein (beachtet Anführungszeichen)
               reader = csv.reader(f)
               rows = list(reader)
           
           with open('data.csv', 'w', encoding='utf-8', newline='') as f:
               writer = csv.writer(f)
               for row in rows:
-                  # Wir löschen Spalte 1 (Index 0) und Spalte 5 (Index 4)
-                  # Wir bauen eine neue Zeile ohne diese Indizes
-                  new_row = [val for i, val in enumerate(row) if i not in [0, 4]]
-                  writer.writerow(new_row)
+                  # Wir greifen nur die Indizes 1, 3, 5, 6, 7 ab
+                  # Falls eine Zeile (z.B. leer) weniger Spalten hat, überspringen wir sie
+                  try:
+                      new_row = [row[1], row[3], row[5], row[6], row[7]]
+                      writer.writerow(new_row)
+                  except IndexError:
+                      continue
           EOF
-         
-          # 3. Aufräumen
+          
           rm temp_full.csv
 
       - name: Commit and Push if changed
