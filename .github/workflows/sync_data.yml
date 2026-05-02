@@ -2,14 +2,17 @@ name: Sync Google Sheet Data
 
 on:
   schedule:
-    - cron: '*/30 * * * *' # Läuft alle 30 Minuten
-  workflow_dispatch: # Erlaubt manuelles Starten
+    - cron: '*/30 * * * *' 
+  workflow_dispatch: 
 
-# Hier setzen wir die Variable global für den gesamten Workflow
+# Erzwingt Node 24 für die v4 Action
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-  ACTIONS_STEP_DEBUG: false # Unterdrückt unnötiges Rauschen
-  
+
+# GANZ WICHTIG: Erlaubt der Action, Dateien im Repo zu ändern
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,14 +22,20 @@ jobs:
 
       - name: Download CSV from Google Sheets
         run: |
-          curl -L -o data.csv "https://docs.google.com/spreadsheets/d/e/2PACX-1vTEOrp8a66YpZHfiVx5dcO-myl5_gq15hlzRIfAIx8XAA0xgPmJXYIxcH5tfwCCsqDXGZXG6jyQ5xmV/pub?gid=1124625812&single=true&output=csv"
-
+          # Wir nutzen -f um bei Fehlern abzubrechen und -L für Weiterleitungen
+          curl -f -L -o data.csv "https://docs.google.com/spreadsheets/d/e/2PACX-1vTEOrp8a66YpZHfiVx5dcO-myl5_gq15hlzRIfAIx8XAA0xgPmJXYIxcH5tfwCCsqDXGZXG6jyQ5xmV/pub?gid=1124625812&single=true&output=csv"
+        
       - name: Commit and Push if changed
         run: |
-          git config --global user.name "GitHub Action"
-          git config --global user.email "action@github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add data.csv
-          # Nur committen, wenn sich die Daten wirklich geändert haben
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Daten automatisch aktualisiert" && git push)
-         
-          
+          # Nur committen, wenn die Datei neu ist oder sich geändert hat
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Daten automatisch aktualisiert: $(date)"
+            git push
+          else
+            echo "Keine Änderungen in den Daten gefunden."
+          fi
+
+
