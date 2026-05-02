@@ -29,7 +29,7 @@ jobs:
           # 2. Filtern: Wir behalten nur die gewünschten Spalten.
           # Beispiel: Wenn du Spalte 1 und 5 löschen willst, 
           # behältst du Feld 2-4 und 6 bis Ende.
-          cut -d ',' -f 2,4,6- temp_full.csv > data.csv
+          cut -d ',' -f 2,4,6-7 temp_full.csv > data.csv
           
           # 3. Temporäre Datei löschen
           rm temp_full.csv
