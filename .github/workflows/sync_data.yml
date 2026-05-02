@@ -20,20 +20,32 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Download and Filter CSV
+      - name: Download and Clean CSV
         run: |
           # 1. Download der kompletten Datei
           # Wir nutzen -f um bei Fehlern abzubrechen und -L für Weiterleitungen
           curl -f -L -o temp_full.csv "https://docs.google.com/spreadsheets/d/e/2PACX-1vTEOrp8a66YpZHfiVx5dcO-myl5_gq15hlzRIfAIx8XAA0xgPmJXYIxcH5tfwCCsqDXGZXG6jyQ5xmV/pub?gid=1124625812&single=true&output=csv"
           
-          # 2. Filtern: Wir behalten nur die gewünschten Spalten.
-          # Beispiel: Wenn du Spalte 1 und 5 löschen willst, 
-          # behältst du Feld 2-4 und 6 bis Ende.
-          cut -d ',' -f 2,4,6-8 temp_full.csv > data.csv
+          # 2. Intelligente Filterung mit Python
+          python3 - <<EOF
+          import csv
+          with open('temp_full.csv', 'r', encoding='utf-8') as f:
+              # Wir lesen die Datei ein (beachtet Anführungszeichen)
+              reader = csv.reader(f)
+              rows = list(reader)
           
-          # 3. Temporäre Datei löschen
+          with open('data.csv', 'w', encoding='utf-8', newline='') as f:
+              writer = csv.writer(f)
+              for row in rows:
+                  # Wir löschen Spalte 1 (Index 0) und Spalte 5 (Index 4)
+                  # Wir bauen eine neue Zeile ohne diese Indizes
+                  new_row = [val for i, val in enumerate(row) if i not in [0, 4]]
+                  writer.writerow(new_row)
+          EOF
+         
+          # 3. Aufräumen
           rm temp_full.csv
-          
+
       - name: Commit and Push if changed
         run: |
           git config --global user.name "github-actions[bot]"
