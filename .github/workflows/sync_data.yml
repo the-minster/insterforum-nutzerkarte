@@ -1,1 +1,24 @@
+name: Sync Google Sheet Data
 
+on:
+  schedule:
+    - cron: '*/30 * * * *' # Läuft alle 30 Minuten
+  workflow_dispatch: # Erlaubt manuelles Starten
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Download CSV from Google Sheets
+        run: |
+          curl -L -o data.csv "https://docs.google.com/spreadsheets/d/e/2PACX-1vTEOrp8a66YpZHfiVx5dcO-myl5_gq15hlzRIfAIx8XAA0xgPmJXYIxcH5tfwCCsqDXGZXG6jyQ5xmV/pub?gid=1124625812&single=true&output=csv"
+
+      - name: Commit and Push if changed
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add data.csv
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Daten automatisch aktualisiert" && git push)
