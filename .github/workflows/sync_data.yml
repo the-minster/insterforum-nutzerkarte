@@ -20,11 +20,20 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Download CSV from Google Sheets
+      - name: Download and Filter CSV
         run: |
+          # 1. Download der kompletten Datei
           # Wir nutzen -f um bei Fehlern abzubrechen und -L für Weiterleitungen
-          curl -f -L -o data.csv "https://docs.google.com/spreadsheets/d/e/2PACX-1vTEOrp8a66YpZHfiVx5dcO-myl5_gq15hlzRIfAIx8XAA0xgPmJXYIxcH5tfwCCsqDXGZXG6jyQ5xmV/pub?gid=1124625812&single=true&output=csv"
-        
+          curl -f -L -o temp_full.csv "https://docs.google.com/spreadsheets/d/e/2PACX-1vTEOrp8a66YpZHfiVx5dcO-myl5_gq15hlzRIfAIx8XAA0xgPmJXYIxcH5tfwCCsqDXGZXG6jyQ5xmV/pub?gid=1124625812&single=true&output=csv"
+          
+          # 2. Filtern: Wir behalten nur die gewünschten Spalten.
+          # Beispiel: Wenn du Spalte 1 und 5 löschen willst, 
+          # behältst du Feld 2-4 und 6 bis Ende.
+          cut -d ',' -f 2,4,6- temp_full.csv > data.csv
+          
+          # 3. Temporäre Datei löschen
+          rm temp_full.csv
+          
       - name: Commit and Push if changed
         run: |
           git config --global user.name "github-actions[bot]"
