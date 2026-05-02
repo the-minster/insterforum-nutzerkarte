@@ -8,7 +8,8 @@ on:
 # Hier setzen wir die Variable global für den gesamten Workflow
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
+  ACTIONS_STEP_DEBUG: false # Unterdrückt unnötiges Rauschen
+  
 jobs:
   build:
     runs-on: ubuntu-latest
