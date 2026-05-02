@@ -1,1 +1,64 @@
+name: Sync Google Sheet Data
 
+on:
+  schedule:
+    - cron: '*/30 * * * *' # Läuft alle 30 Minuten
+  workflow_dispatch: # Erlaubt manuelles Starten über den Actions-Tab
+
+# Erzwingt die Nutzung von Node 24 für veraltete Actions im Jahr 2026
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+# Erlaubt der Action, die gefilterte data.csv ins Repo zu schreiben
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download and Filter CSV
+        run: |
+          # 1. Download der Originaldatei von Google
+          curl -f -L -o temp_full.csv "https://docs.google.com/spreadsheets/d/e/2PACX-1vTEOrp8a66YpZHfiVx5dcO-myl5_gq15hlzRIfAIx8XAA0xgPmJXYIxcH5tfwCCsqDXGZXG6jyQ5xmV/pub?gid=1124625812&single=true&output=csv"
+          
+          # 2. Filterung der benötigten Spalten mit Python (beachtet Kommas in Texten)
+          # Wir behalten: Spalte 2 (1), Spalte 4 (3), Spalte 6 (5), Spalte 7 (6), Spalte 8 (7)
+          python3 - <<EOF
+          import csv
+          try:
+              with open('temp_full.csv', 'r', encoding='utf-8') as f:
+                  reader = csv.reader(f)
+                  rows = list(reader)
+              
+              with open('data.csv', 'w', encoding='utf-8', newline='') as f:
+                  writer = csv.writer(f)
+                  for row in rows:
+                      # Sicherstellen, dass die Zeile genug Spalten hat
+                      if len(row) >= 8:
+                          new_row = [row[1], row[3], row[5], row[6], row[7]]
+                          writer.writerow(new_row)
+          except Exception as e:
+              print(f"Fehler bei der CSV-Verarbeitung: {e}")
+              exit(1)
+          EOF
+          
+          # 3. Temporäre Datei löschen
+          rm temp_full.csv
+
+      - name: Commit and Push if changed
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add data.csv
+          # Nur pushen, wenn sich die Daten tatsächlich geändert haben
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "Daten-Sync: Spalten gefiltert $(date)"
+            git push
+          else
+            echo "Keine Änderungen vorhanden."
+          fi
+          
