@@ -44,6 +44,44 @@ meetingLayer.addTo(map); // Default "Ein"
 // Layer-Steuerung erweitern (falls bereits vorhanden)
 // L.control.layers(null, { "Mitglieder": memberLayer, "Treffen": meetingLayer }).addTo(map);
 
+function loadMeetings() {
+    const today = new Date();
+
+    Papa.parse('treffen.csv', {
+        download: true,
+        header: false, // Da wir manuell befüllen und Indizes nutzen
+        complete: function(results) {
+            results.data.forEach(row => {
+                // Nur verarbeiten, wenn Koordinaten vorhanden sind
+                if (row[2] && row[3]) {
+                    
+                    // Datumsprüfung (Spalte 6 / Index 5)
+                    // Format in CSV sollte YYYY-MM-DD sein
+                    const expiryDate = new Date(row[4]);
+
+                    if (expiryDate >= today || !row[4]) { 
+                        // Eintrag nur anzeigen, wenn Datum heute/Zukunft oder leer
+                        const marker = L.marker([parseFloat(row[2]), parseFloat(row[3])], {
+                            icon: meetingIcon
+                        });
+
+                        marker.bindPopup(`
+                            <strong>Treffen: ${row[0]}</strong><br>
+                            Datum: ${row[4]}<br>
+                            ${row[1]}
+                        `);
+
+                        marker.addTo(meetingLayer);
+                    }
+                }
+            });
+        }
+    });
+}
+
+// Funktion aufrufen
+loadMeetings();
+
 const oms = new OverlappingMarkerSpiderfier(map);
 
 Papa.parse(csvUrl, {
