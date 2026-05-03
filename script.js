@@ -54,8 +54,8 @@ function loadMeetings() {
         header: false,
         complete: function(results) {
             results.data.forEach(row => {
-                // Notwendige Daten: Name (0), Link (1), Lat (3), Lon (4), Datum (5)
-                const [name, forumUrl, , lat, lon, dateStr] = row;
+                // Notwendige Daten: Name (0), Link (1), Lat (2), Lon (3), Datum (4)
+                const [name, forumUrl, lat, lon, dateStr] = row;
 
                 if (lat && lon && name) {
                     const expiryDate = new Date(dateStr);
@@ -71,7 +71,7 @@ function loadMeetings() {
                         let popupContent = `<strong>Treffen: ${name}</strong><br>`;
                         
                         if (forumUrl && forumUrl.startsWith('http')) {
-                            popupContent += `<a href="${forumUrl}" target="_blank" rel="noopener">Zum Forenbeitrag</a><br>`;
+                            popupContent += `<a href="${forumUrl}" target="_blank" rel="noopener">zum Beitrag</a><br>`;
                         }
                         
                         if (dateStr) {
