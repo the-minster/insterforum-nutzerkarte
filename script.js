@@ -46,31 +46,39 @@ meetingLayer.addTo(map);
 
 function loadMeetings() {
     const today = new Date();
+    // Zeit auf 0:00 setzen für fairen Vergleich am heutigen Tag
+    today.setHours(0, 0, 0, 0);
 
-    Papa.parse('treffen.csv', {
+    Papa.parse('meetings.csv', {
         download: true,
-        header: false, // Da wir manuell befüllen und Indizes nutzen
+        header: false,
         complete: function(results) {
             results.data.forEach(row => {
-                // Nur verarbeiten, wenn Koordinaten vorhanden sind
-                if (row[2] && row[3]) {
-                    
-                    // Datumsprüfung (Spalte 6 / Index 5)
-                    // Format in CSV sollte YYYY-MM-DD sein
-                    const expiryDate = new Date(row[4]);
+                // Notwendige Daten: Name (0), Link (1), Lat (3), Lon (4), Datum (5)
+                const [name, forumUrl, , lat, lon, dateStr] = row;
 
-                    if (expiryDate >= today || !row[4]) { 
-                        // Eintrag nur anzeigen, wenn Datum heute/Zukunft oder leer
-                        const marker = L.marker([parseFloat(row[2]), parseFloat(row[3])], {
+                if (lat && lon && name) {
+                    const expiryDate = new Date(dateStr);
+
+                    // Nur anzeigen, wenn Datum heute/Zukunft oder gar kein Datum gesetzt
+                    if (!dateStr || expiryDate >= today) {
+                        
+                        const marker = L.marker([parseFloat(lat), parseFloat(lon)], {
                             icon: meetingIcon
                         });
 
-                        marker.bindPopup(`
-                            <strong>Treffen: ${row[0]}</strong><br>
-                            Datum: ${row[4]}<br>
-                            ${row[1]}
-                        `);
+                        // Popup-Inhalt mit Link zum Forum
+                        let popupContent = `<strong>Treffen: ${name}</strong><br>`;
+                        
+                        if (forumUrl && forumUrl.startsWith('http')) {
+                            popupContent += `<a href="${forumUrl}" target="_blank" rel="noopener">Zum Forenbeitrag</a><br>`;
+                        }
+                        
+                        if (dateStr) {
+                            popupContent += `<small>Geplant bis: ${dateStr}</small>`;
+                        }
 
+                        marker.bindPopup(popupContent);
                         marker.addTo(meetingLayer);
                     }
                 }
@@ -79,7 +87,6 @@ function loadMeetings() {
     });
 }
 
-// Funktion aufrufen
 loadMeetings();
 
 const oms = new OverlappingMarkerSpiderfier(map);
