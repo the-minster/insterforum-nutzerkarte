@@ -39,7 +39,7 @@ const meetingIcon = L.icon({
 
 // Neue Layer-Gruppe erstellen
 const meetingLayer = L.layerGroup();
-meetingLayer.addTo(map); // Default "Ein"
+meetingLayer.addTo(map);
 
 // Layer-Steuerung erweitern (falls bereits vorhanden)
 // L.control.layers(null, { "Mitglieder": memberLayer, "Treffen": meetingLayer }).addTo(map);
@@ -134,6 +134,7 @@ const overlayMaps = {
     "Umkreis-Radien": circleLayer,
     "Heatmap (Nutzerdichte)": heatLayerPoints,
     "Heatmap (akzeptable Strecke)": heatLayerOverlap
+    "Inster-Treffen": meetingLayer
 };
 
 L.control.layers(null, overlayMaps, {collapsed: false}).addTo(map);
