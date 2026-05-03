@@ -49,7 +49,7 @@ function loadMeetings() {
     // Zeit auf 0:00 setzen für fairen Vergleich am heutigen Tag
     today.setHours(0, 0, 0, 0);
 
-    Papa.parse('meetings.csv', {
+    Papa.parse('treffen.csv', {
         download: true,
         header: false,
         complete: function(results) {
