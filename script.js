@@ -78,7 +78,7 @@ function loadMeetings() {
                         }
                         
                         // Popup-Inhalt mit Link zum Forum
-                        let popupContent = `<strong>Treffen: ${name}</strong><br>`;
+                        let popupContent = `<strong>${name}</strong><br>`;
                         
                         if (forumUrl && forumUrl.startsWith('http')) {
                             popupContent += `<a href="${forumUrl}" target="_blank" rel="noopener">Quelle im Forum</a><br>`;
