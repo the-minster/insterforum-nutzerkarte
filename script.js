@@ -75,7 +75,7 @@ function loadMeetings() {
                         }
                         
                         if (dateStr) {
-                            popupContent += `<small>Geplant bis: ${dateStr}</small>`;
+                            popupContent += `<small>Geplant am: ${dateStr}</small>`;
                         }
 
                         marker.bindPopup(popupContent);
