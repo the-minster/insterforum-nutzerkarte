@@ -31,7 +31,7 @@ const heatLayerOverlap = L.heatLayer([], {
 
 // Eigenes Icon für Treffen definieren
 const meetingIcon = L.icon({
-    iconUrl: 'instertreffen.png', // Pfad zu deinem Icon
+    iconUrl: 'treffen_inster.png', // Pfad zu deinem Icon
     iconSize: [32, 32],
     iconAnchor: [16, 32],
     popupAnchor: [0, -32]
