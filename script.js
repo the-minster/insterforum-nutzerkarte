@@ -31,21 +31,18 @@ const heatLayerOverlap = L.heatLayer([], {
 
 // Eigenes Icon für Treffen definieren
 const meetingIcon = L.icon({
-    iconUrl: 'meeting-icon.png', // Pfad zu deinem Icon
+    iconUrl: 'instericon.png', // Pfad zu deinem Icon
     iconSize: [32, 32],
     iconAnchor: [16, 32],
     popupAnchor: [0, -32]
 });
 
 // Neue Layer-Gruppe erstellen
-const meetingLayer = L.layerGroup();
-meetingLayer.addTo(map); // Default "Ein"
+// const meetingLayer = L.layerGroup();
+// meetingLayer.addTo(map); // Default "Ein"
 
 // Layer-Steuerung erweitern (falls bereits vorhanden)
-// L.control.layers(null, { "Mitglieder": memberLayer, "Treffen": meetingLayer }).addTo(map);
-
-
-
+L.control.layers(null, { "Mitglieder": memberLayer, "Treffen": meetingLayer }).addTo(map);
 
 const oms = new OverlappingMarkerSpiderfier(map);
 
