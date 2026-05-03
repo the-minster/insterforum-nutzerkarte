@@ -62,11 +62,21 @@ function loadMeetings() {
 
                     // Nur anzeigen, wenn Datum heute/Zukunft oder gar kein Datum gesetzt
                     if (!dateStr || expiryDate >= today) {
-                        
                         const marker = L.marker([parseFloat(lat), parseFloat(lon)], {
                             icon: meetingIcon
                         });
 
+                        // Datum formatieren
+                        let formattedDate = "";
+                        if (dateStr) {
+                            // Erzeugt aus "2026-05-20" -> "20.05.2026"
+                            formattedDate = expiryDate.toLocaleDateString('de-DE', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric'
+                            });
+                        }
+                        
                         // Popup-Inhalt mit Link zum Forum
                         let popupContent = `<strong>Treffen: ${name}</strong><br>`;
                         
@@ -74,10 +84,9 @@ function loadMeetings() {
                             popupContent += `<a href="${forumUrl}" target="_blank" rel="noopener">Quelle im Forum</a><br>`;
                         }
                         
-                        if (dateStr) {
-                            popupContent += `<small>Geplant: ${dateStr}</small>`;
+                        if (formattedDate) {
+                            popupContent += `<small>Termin: ${formattedDate}</small>`;
                         }
-
                         marker.bindPopup(popupContent);
                         marker.addTo(meetingLayer);
                     }
