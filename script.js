@@ -71,11 +71,11 @@ function loadMeetings() {
                         let popupContent = `<strong>Treffen: ${name}</strong><br>`;
                         
                         if (forumUrl && forumUrl.startsWith('http')) {
-                            popupContent += `<a href="${forumUrl}" target="_blank" rel="noopener">zum Beitrag</a><br>`;
+                            popupContent += `<a href="${forumUrl}" target="_blank" rel="noopener">Aktuelles im Forum</a><br>`;
                         }
                         
                         if (dateStr) {
-                            popupContent += `<small>Geplant am: ${dateStr}</small>`;
+                            popupContent += `<small>Geplant: ${dateStr}</small>`;
                         }
 
                         marker.bindPopup(popupContent);
