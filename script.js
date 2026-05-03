@@ -140,7 +140,7 @@ const overlayMaps = {
     "Nutzer-Marker": markerLayer,
     "Umkreis-Radien": circleLayer,
     "Heatmap (Nutzerdichte)": heatLayerPoints,
-    "Heatmap (akzeptable Strecke)": heatLayerOverlap
+    "Heatmap (akzeptable Strecke)": heatLayerOverlap,
     "Inster-Treffen": meetingLayer
 };
 
