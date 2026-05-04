@@ -105,6 +105,26 @@ html, body {
     font-size: 1.1em;
 }
 
+/* Zentriert den gesamten Inhalt des Popups */
+.leaflet-popup-content {
+    text-align: center;
+}
+
+/* Optional: Den Link etwas schöner als Button gestalten */
+.leaflet-popup-content a {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white !important;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.leaflet-popup-content a:hover {
+    background-color: #0056b3;
+}
+
 /* --- MOBILE OPTIMIERUNG --- */
 @media (max-width: 600px) {
     
