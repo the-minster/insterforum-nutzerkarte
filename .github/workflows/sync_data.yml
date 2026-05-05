@@ -2,7 +2,7 @@ name: Sync Google Sheet Data
 
 on:
   schedule:
-    - cron: '*/23 * * * *'
+    - cron: '*/37 * * * *'
   workflow_dispatch: # Erlaubt manuelles Starten über den Actions-Tab
 
 # Erzwingt die Nutzung von Node 24 für veraltete Actions im Jahr 2026
