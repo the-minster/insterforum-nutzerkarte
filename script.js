@@ -55,7 +55,7 @@ function updateLayerMenu() {
     const meetingCount = meetingLayer.getLayers().length;
 
     const overlayMaps = {
-        [`Nutzer-Marker (${memberCount})`]: markerLayer,
+        [`Nutzer-Marker (${memberCount} Mitglieder)`]: markerLayer,
         "Umkreis-Radien": circleLayer,
         "Heatmap (Nutzerdichte)": heatLayerPoints,
         "Heatmap (akzeptable Strecke)": heatLayerOverlap,
