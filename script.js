@@ -72,32 +72,47 @@ function loadMeetings() {
 
     Papa.parse('treffen.csv', {
         download: true,
-        header: false,
+        header: false, // Wir lesen weiter über Indizes
         complete: function(results) {
-            results.data.forEach(row => {
+            results.data.forEach((row, index) => {
+                // Sicherheitscheck: Überspringt die allererste Zeile, falls es eine Kopfzeile ist
+                if (index === 0 && isNaN(parseFloat(row[2]))) {
+                    return; 
+                }
+
                 const [name, forumUrl, lat, lon, dateStr] = row;
 
-                if (lat && lon && name) {
-                    let expiryDate = null;
+                // Prüfen, ob Name und gültige Koordinaten da sind
+                if (name && lat && lon && !isNaN(parseFloat(lat)) && !isNaN(parseFloat(lon))) {
                     let isExpired = false;
+                    let expiryDate = null;
 
-                    if (dateStr) {
-                        const [year, month, day] = dateStr.split('-');
-                        expiryDate = new Date(year, month - 1, day);
-                        if (expiryDate < today) {
-                            isExpired = true;
+                    // Nur prüfen, wenn überhaupt ein Datum eingetragen wurde
+                    if (dateStr && dateStr.trim() !== "") {
+                        const parts = dateStr.split('-');
+                        if (parts.length === 3) {
+                            const year = parseInt(parts[0], 10);
+                            const month = parseInt(parts[1], 10) - 1;
+                            const day = parseInt(parts[2], 10);
+                            
+                            expiryDate = new Date(year, month, day);
+                            
+                            // Wenn das Datum gültig ist UND in der Vergangenheit liegt -> abgelaufen
+                            if (!isNaN(expiryDate.getTime()) && expiryDate < today) {
+                                isExpired = true;
+                            }
                         }
                     }
 
-                    // Nur anzeigen, wenn Datum heute/Zukunft oder gar kein Datum gesetzt
+                    // Nur anzeigen, wenn NICHT abgelaufen
                     if (!isExpired) {
                         const marker = L.marker([parseFloat(lat), parseFloat(lon)], {
                             icon: meetingIcon
                         });
 
-                        // Datum formatieren
+                        // Datum für deutsche Anzeige formatieren
                         let formattedDate = "";
-                        if (dateStr && expiryDate) {
+                        if (expiryDate && !isNaN(expiryDate.getTime())) {
                             formattedDate = expiryDate.toLocaleDateString('de-DE', {
                                 day: '2-digit',
                                 month: '2-digit',
@@ -105,7 +120,7 @@ function loadMeetings() {
                             });
                         }
                         
-                        // Popup-Inhalt zentriert formatiert
+                        // Popup zusammenbauen
                         let popupContent = `<div style="text-align: center;">`;
                         popupContent += `<strong>${name}</strong><br>`;
                         
@@ -123,7 +138,7 @@ function loadMeetings() {
                     }
                 }
             });
-            // Zähler aktualisieren nach dem Laden der Treffen
+            // Zähler im Menü aktualisieren
             updateLayerMenu();
         }
     });
