@@ -55,11 +55,11 @@ function updateLayerMenu() {
     const meetingCount = meetingLayer.getLayers().length;
 
     const overlayMaps = {
-        `Nutzer-Marker (${memberCount})`: markerLayer,
+        [`Nutzer-Marker (${memberCount})`]: markerLayer,
         "Umkreis-Radien": circleLayer,
         "Heatmap (Nutzerdichte)": heatLayerPoints,
         "Heatmap (akzeptable Strecke)": heatLayerOverlap,
-        `Inster-Treffen (${meetingCount})`: meetingLayer
+        [`Inster-Treffen (${meetingCount})`]: meetingLayer
     };
 
     layerControl = L.control.layers(null, overlayMaps, {collapsed: false});
