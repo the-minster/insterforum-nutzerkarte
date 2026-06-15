@@ -59,7 +59,7 @@ function updateLayerMenu() {
         "Umkreis-Radien": circleLayer,
         "Heatmap (Nutzerdichte)": heatLayerPoints,
         "Heatmap (akzeptable Strecke)": heatLayerOverlap,
-        [`Inster-Treffen (${meetingCount})`]: meetingLayer
+        [`Inster-Treffen (aktuell ${meetingCount} Termin(e))`]: meetingLayer
     };
 
     layerControl = L.control.layers(null, overlayMaps, {collapsed: false});
