@@ -109,7 +109,7 @@ function loadMeetings() {
                     // Nur anzeigen, wenn NICHT abgelaufen
                     if (!isExpired) {
                         const marker = L.marker([parseFloat(lat), parseFloat(lon)], {
-                            icon: meetingIcon
+                            icon: meetingIcon,
                             pane: 'meetingPane'
                         });
 
