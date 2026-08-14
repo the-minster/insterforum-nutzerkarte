@@ -1,4 +1,6 @@
 const map = L.map('map').setView([51.1657, 10.4515], 6);
+map.createPane('meetingPane');
+map.getPane('meetingPane').style.zIndex = 650;
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
@@ -108,6 +110,7 @@ function loadMeetings() {
                     if (!isExpired) {
                         const marker = L.marker([parseFloat(lat), parseFloat(lon)], {
                             icon: meetingIcon
+                            pane: 'meetingPane'
                         });
 
                         // Datum für deutsche Anzeige formatieren
